@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        
+        <title>FXPS</title>
+    </h:head>
+    
+    <h:body>
+        <p:layout fullPage="true">
+            
+            <p:layoutUnit  position="north" size="100"  resizable="true" closable="true" collapsible="true">
+                top
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="35" >
+                <center>@<a href="http://www.bb.org.bd" target="_blank">www.bb.org.bd</a></center>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="200" header="Menu (#{loginBean.uname})" resizable="false" closable="false" collapsible="true">
+                <p:tieredMenu style="size: 99%" autoDisplay="false">
+                    <p:menuitem value="Login" url="/"/>
+                    <p:menuitem value="Complain" url="#{menuBean.getMenu('bo101')}"/>
+                    <p:menuitem value="Old Complain" url="#{menuBean.getMenu('bo102')}"/>
+                    <p:menuitem value="Send Mail" url="#{menuBean.getMenu('bo103')}"/>
+                    <p:menuitem value="Mobile" url="http://www.primefaces.org" />
+                </p:tieredMenu>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" size="200" header="Notes" resizable="true" closable="true" collapsible="true" effect="drop">
+                <ui:insert name="note" class="">Put note here</ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" >
+                <center>
+                    <ui:insert name="content" class="">Put default content here, if any.</ui:insert>
+                </center>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+
+</html>
