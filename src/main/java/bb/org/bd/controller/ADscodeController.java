@@ -31,7 +31,8 @@ import bb.org.bd.model.Adscode;
 public class ADscodeController {
 	
 	private static final Logger log = Logger.getLogger(ADscodeController.class);
-	private static final String REST_SERVICE_URI = "http://localhost:8080/fxserver/ws-adscodes/";
+	//private static final String REST_SERVICE_URI = "http://localhost:8080/fxserver/ws-adscodes/";
+	private static final String REST_SERVICE_URI = "http://10.11.100.50:8080/BBFxService/ws-adscodes/";
 	
 	RestTemplate restTemplate = new RestTemplate();
 	
@@ -48,11 +49,10 @@ public class ADscodeController {
 	    HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 	     
 	    //ResponseEntity<List<Adscode>> response = exchange("http://rest.com/person", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Adscode>>() {});
-	    ParameterizedTypeReference<List<Adscode>> responseType =
-	            new ParameterizedTypeReference<List<Adscode>>() {   };
+	    ParameterizedTypeReference<List<Adscode>> responseType = new ParameterizedTypeReference<List<Adscode>>() {   };
 
-	    ResponseEntity<List<Adscode>> response = restTemplate.exchange(
-	    		REST_SERVICE_URI, HttpMethod.GET, entity, responseType, (Object) "pwebb");
+	    ResponseEntity<List<Adscode>> response = 
+	    							restTemplate.exchange(REST_SERVICE_URI, HttpMethod.GET, entity, responseType, (Object) "pwebb");
 		
 		//RestTemplate restTemplate = new RestTemplate();
 		/*ResponseEntity<List<Adscode>> esponse =

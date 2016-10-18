@@ -1,0 +1,59 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="jobA" class="bb.org.bd.schedules.JobA" />
+	<bean id="jobB" class="bb.org.bd.schedules.JobB" />
+	<bean id="jobC" class="bb.org.bd.schedules.JobC" />
+
+	<!-- Quartz Job -->
+	<bean name="JobA"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="bb.org.bd.schedules.JobA" />
+	</bean>
+
+	<bean name="JobB"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="bb.org.bd.schedules.JobB" />
+	</bean>
+
+	<bean name="JobC"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="bb.org.bd.schedules.JobC" />
+	</bean>
+
+	<!-- Cron Trigger, run every day at 1 AM -->
+	<bean id="cronTriggerJobA"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="JobA" />
+		<!-- <property name="cronExpression" value="0/5 * * * * ?" /> -->
+		<!-- http://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06.html -->
+		<!-- Seconds Minutes Hours Day-of-Month Month Day-of-Week Year -->
+		<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>
+
+	<bean id="cronTriggerJobB"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="JobB" />
+		<property name="cronExpression" value="0 35 0,13,16 * * ?" />
+		<!-- <property name="cronExpression" value="0 0/1 * * * ?" /> -->
+	</bean>
+
+	<bean id="cronTriggerJobC"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="JobC" />
+		<property name="cronExpression" value="0/5 * * * * ?" />
+	</bean>
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTriggerJobA" />
+				<ref bean="cronTriggerJobB" />
+				<ref bean="cronTriggerJobC" />
+			</list>
+		</property>
+	</bean>
+
+</beans>
