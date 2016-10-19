@@ -7,29 +7,36 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+import bb.org.bd.utils.DateTimeManager;
 import bb.org.bd.xmlmanager.ExpXmlGenerator;
 import bb.org.bd.xmlmanager.LcXmlGenerator;
 
 public class JobA extends QuartzJobBean {
-	
+
 	private static final Logger logger = Logger.getLogger(JobA.class);
-	
+
 	@Override
-	protected void executeInternal(JobExecutionContext arg0)
-		throws JobExecutionException {
+	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 		System.out.println("Job A is runing at: " + new Date());
-		try {
-			
-			LcXmlGenerator oLcXmlGenerator = new LcXmlGenerator();
-			logger.info("LC XML For Holidays generated: " + oLcXmlGenerator.generateLCxmlForHolidays());
-			
-			ExpXmlGenerator expXmlGenerator = new ExpXmlGenerator();
-			logger.info("Exp XML For Holidays generated: " + expXmlGenerator.generateExpXmlForHolidays());
-			
-		} catch (Exception e) {
-			logger.warn("Exception: ", e);
-			
+
+		String dateString = DateTimeManager.getYesterdayDateString("yyyy-MM-dd");
+		if (DateTimeManager.isHoliday(dateString, "yyyy-MM-dd")) {
+			logger.info(dateString + " is holiday");
+			try {
+
+				LcXmlGenerator oLcXmlGenerator = new LcXmlGenerator();
+				logger.info("LC XML For Holidays generated: " + oLcXmlGenerator.generateLCxmlForHolidays());
+
+				ExpXmlGenerator expXmlGenerator = new ExpXmlGenerator();
+				logger.info("Exp XML For Holidays generated: " + expXmlGenerator.generateExpXmlForHolidays());
+
+			} catch (Exception e) {
+				logger.warn("Exception: ", e);
+			}
+		} else {
+			logger.info(dateString + " is not holiday");
 		}
+
 	}
 
 }

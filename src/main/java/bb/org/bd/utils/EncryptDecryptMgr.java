@@ -3,15 +3,14 @@ package bb.org.bd.utils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
-import java.util.Base64;
-import java.util.Base64.Decoder;
-import java.util.Base64.Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
+
+import org.apache.commons.codec.binary.Base64;
 
 public class EncryptDecryptMgr {
 	private static final char[] PASSWORD = "ABCD-wxyz-MASUD-1234-LINUX".toCharArray();
@@ -28,9 +27,14 @@ public class EncryptDecryptMgr {
 
 	private static String base64Encode(byte[] bytes) {
 		// NB: This class is internal, and you probably should use another impl
-		// return new BASE64Encoder().encode(bytes);
-		Encoder enc = Base64.getEncoder();
-		return enc.encodeToString(bytes);
+		
+		//return new BASE64Encoder().encode(bytes);
+		
+		//require java 8
+		/*Encoder enc = Base64.getEncoder();
+		return enc.encodeToString(bytes);*/
+		System.out.println("bytes :" + bytes); 
+		return new String(Base64.encodeBase64(bytes));
 	}
 
 	public static String decrypt(String property) throws GeneralSecurityException, IOException {
@@ -44,8 +48,13 @@ public class EncryptDecryptMgr {
 	private static byte[] base64Decode(String property) throws IOException {
 		// NB: This class is internal, and you probably should use another impl
 		// return new BASE64Decoder().decodeBuffer(property);
-		Decoder dec = Base64.getDecoder();
-		return dec.decode(property);
+		
+		//require java 8
+		/*Decoder dec = Base64.getDecoder();
+		return dec.decode(property);*/
+		
+		System.out.println("property :" + property); 
+		return Base64.decodeBase64(property);
 	}
 
 }

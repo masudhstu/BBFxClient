@@ -15,7 +15,7 @@ public class XmlFileWritter {
 	public static boolean writeXMLFile(String xml) {
 		try {
 
-			log.debug("xml in XmlGenerator" + xml);
+			log.debug("xml, now at XmlGenerator");
 			File file = new File("/u01/fxJava/xmls/filename.xml");
 
 			// if file doesnt exists, then create it
@@ -47,7 +47,7 @@ public class XmlFileWritter {
 	public static boolean writeXMLFile(String xml, String Name) {
 		try {
 
-			log.debug("xml in XmlGenerator" + xml);
+			log.debug("xml, now at XmlGenerator");
 			File file = new File("/u01/fxJava/xmls/" + Name + ".xml");
 
 			// if file doesnt exists, then create it

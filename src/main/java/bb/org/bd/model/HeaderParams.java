@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 
-import bb.org.bd.utils.DateFormater;
+import bb.org.bd.utils.DateTimeManager;
 
 
 public class HeaderParams {
@@ -108,7 +108,7 @@ public class HeaderParams {
 		
 		else if(queryType.equals("2"))
 		{
-			if(DateFormater.parseDate(date, "yyyy-MM-dd"))
+			if(DateTimeManager.parseDate(date, "yyyy-MM-dd"))
 				return "OK";
 			else
 				return "Date is not Valid as yyyy-MM-dd";			
@@ -116,15 +116,15 @@ public class HeaderParams {
 		else if(queryType.equals("3"))
 		{
 			//oLC = lcToCustomsService.findLcsByDateAndTimeRange(date, timeFrom, timeTo);
-			if(DateFormater.parseDate(date, "yyyy-MM-dd") &&  DateFormater.parseDate(timeFrom, "HH:mm:ss") && DateFormater.parseDate(timeTo, "HH:mm:ss"))
+			if(DateTimeManager.parseDate(date, "yyyy-MM-dd") &&  DateTimeManager.parseDate(timeFrom, "HH:mm:ss") && DateTimeManager.parseDate(timeTo, "HH:mm:ss"))
 				return "OK";
 			else
 			{
-				if(DateFormater.parseDate(date, "yyyy-MM-dd"))
+				if(DateTimeManager.parseDate(date, "yyyy-MM-dd"))
 					message = "1. Date is not Valid as yyyy-MM-dd";
-				if(DateFormater.parseDate(date, "yyyy-MM-dd"))
+				if(DateTimeManager.parseDate(date, "yyyy-MM-dd"))
 					message = message + " \n 2. timeFrom is not Valid as HH:mm:ss";
-				if(DateFormater.parseDate(date, "yyyy-MM-dd"))
+				if(DateTimeManager.parseDate(date, "yyyy-MM-dd"))
 					message = message + "\n 3. timeTo is not Valid as HH:mm:ss";				
 			}		
 			

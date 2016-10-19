@@ -6,9 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateFormater {
+import org.apache.log4j.Logger;
 
-	private final String dateFormat = "yyyy-MM-dd";
+public class DateTimeManager {
+	
+	private static final Logger logger = Logger.getLogger(DateTimeManager.class);
 
 	public static String formateDate(String strDate) {
 
@@ -82,6 +84,41 @@ public class DateFormater {
 			// TODO Auto-generated catch block
 			return false;
 		}		
+	}
+	
+	public static boolean isHoliday(String dateString, String dateFormate) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat(dateFormate);
+			Date date = sdf.parse(dateString);
+
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+
+			//check weekend
+			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+					|| cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+				return true;
+			}
+			
+			// check Labor Day (1st Monday of September)
+			// check 1st Monday of November
+			if (cal.get(Calendar.MONTH) == Calendar.SEPTEMBER
+				&& cal.get(Calendar.DAY_OF_WEEK_IN_MONTH) == 1
+				&& cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+				return true;
+			}
+			
+			// check if 16 December
+			else if (cal.get(Calendar.MONTH) == Calendar.DECEMBER
+				&& cal.get(Calendar.DAY_OF_MONTH) == 16) {
+				return true;
+			}
+
+		} catch (Exception e) {
+			logger.warn("Exception: ", e);
+		}
+
+		return false;
 	}
 
 }

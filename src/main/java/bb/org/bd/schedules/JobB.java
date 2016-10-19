@@ -7,7 +7,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import bb.org.bd.utils.DateFormater;
+import bb.org.bd.utils.DateTimeManager;
 import bb.org.bd.xmlmanager.ExpXmlGenerator;
 import bb.org.bd.xmlmanager.LcXmlGenerator;
 
@@ -19,7 +19,7 @@ public class JobB extends QuartzJobBean {
 	protected void executeInternal(JobExecutionContext arg0)
 		throws JobExecutionException {
 		System.out.println("Job B is runing at: " + new Date());
-		System.out.println("today is: " + DateFormater.getToday("yyyyMMdd"));
+		System.out.println("today is: " + DateTimeManager.getToday("yyyyMMdd"));
 		
 		LcXmlGenerator oLcXmlGenerator = new LcXmlGenerator();
 		logger.info("LC XML ForEveryday generated: " + oLcXmlGenerator.generateLCxmlForEveryday());

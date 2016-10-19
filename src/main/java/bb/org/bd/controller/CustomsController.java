@@ -9,6 +9,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,19 +21,13 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import bb.org.bd.constants.Constants;
 import bb.org.bd.model.HeaderParams;
 import bb.org.bd.model.exp.EXP_INFO;
 import bb.org.bd.model.lc.LC;
-import bb.org.bd.utils.DateFormater;
-import bb.org.bd.utils.JsonNameManager;
+import bb.org.bd.utils.DateTimeManager;
 import bb.org.bd.xmlmanager.ExpXmlGenerator;
 import bb.org.bd.xmlmanager.LcXmlGenerator;
-import bb.org.bd.xmlmanager.XmlFileWritter;
 
 @RestController
 public class CustomsController {
@@ -42,6 +40,25 @@ public class CustomsController {
 
 	// private static final String REST_SERVICE_URI =
 	// "http://10.11.100.50:8080/BBFxService/ws-bankswithbranches/";
+	
+	//Doing something for all model
+	@ModelAttribute
+    public void addingCommonObjects(Model model1) {
+		
+		model1.addAttribute("headerMessage", "Welcome to khatakhati");
+	}
+	
+	//some works need to be done before calling original request
+	@InitBinder
+	public void initBinder(WebDataBinder binder)
+	{
+		//binder.setDisallowedFields(new String[] {"studentMobile"});
+		
+		//SimpleDateFormat dateFormat = new SimpleDateFormat ("dd/MM/yyyy");
+		//binder.registerCustomEditor(Date.class,"studentDOB",new CustomDateEditor(dateFormat, false));
+		
+		//binder.registerCustomEditor(String.class, "studentHobby", new StudentNameEditor());
+	}
 
 	@RequestMapping(value = "/lcFromBB", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView getLCs() {
@@ -64,10 +81,10 @@ public class CustomsController {
 
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.set("queryType", "1");
-		requestHeaders.set("date", DateFormater.getYesterdayDateString("yyyy-MM-dd"));
+		requestHeaders.set("date", DateTimeManager.getYesterdayDateString("yyyy-MM-dd"));
 		requestHeaders.set("timeFrom", "13:30:01");
 		requestHeaders.set("timeTo", "16:30:00");
-		requestHeaders.set("lc", "0000133512010758");
+		requestHeaders.set("lc", "80716010733");
 		//requestHeaders.set("lc", "1234"); // wrong LC
 		requestHeaders.set("exp", "000000020009452016");
 
@@ -148,30 +165,21 @@ public class CustomsController {
 
 	@RequestMapping(value = "/expFromBB", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView getEXPs() {
-		System.out.println("LCS ");
 
 		String URL = "http://localhost:8080/fxclient/ws-expFromBB";
 		logger.debug(URL);
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		/*
-		 * LC_INFO oLC_INFO = restTemplate.getForObject(URL, LC_INFO.class);
-		 * log.debug(oLC_INFO);
-		 */
-
-		// LC oLC = restTemplate.getForObject(URL, LC.class);
-		// log.debug(oLC);
-
 		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.set("queryType", "2");
-		requestHeaders.set("date", DateFormater.getYesterdayDateString("yyyy-MM-dd"));
+		requestHeaders.set("queryType", "1");
+		requestHeaders.set("date", DateTimeManager.getYesterdayDateString("yyyy-MM-dd"));
 		requestHeaders.set("timeFrom", "13:30:01");
 		requestHeaders.set("timeTo", "16:30:00");
 		requestHeaders.set("lc", "0000133512010758");
 		requestHeaders.set("exp", "000000020009452016");
 
-		HttpEntity<?> requestEntity = new HttpEntity(requestHeaders);
+		HttpEntity<String> requestEntity = new HttpEntity<String>(requestHeaders);
 
 		try {
 			HttpEntity<EXP_INFO> response = restTemplate.exchange(URL, HttpMethod.GET, requestEntity, EXP_INFO.class);
@@ -189,52 +197,6 @@ public class CustomsController {
 			e.printStackTrace();
 			logger.warn("Exception:", e);
 		}
-
-		// Json to POJO
-		/*
-		 * ObjectMapper mapper = new ObjectMapper(); String json = ""; try {
-		 * json = mapper.writeValueAsString(oLC); } catch
-		 * (JsonProcessingException e) { e.printStackTrace(); }
-		 * System.out.println(json); log.debug("json" + json);
-		 */
-
-		/*
-		 * //Json to POJO to XML //
-		 * https://github.com/FasterXML/jackson-dataformat-xml
-		 * System.out.println("printing XML"); // Important: create XmlMapper;
-		 * it will use proper factories, // workarounds ObjectMapper xmlMapper =
-		 * new XmlMapper(); //field name xmlMapper.setPropertyNamingStrategy(new
-		 * JsonNameManager());
-		 * 
-		 * try { String xml = xmlMapper.writeValueAsString(oExp_Info); //
-		 * System.out.println(xml); logger.debug("xml" + xml);
-		 * 
-		 * System.out.println("printing XML File"); // writeXMLFile(xml); //
-		 * writeFile(xml);
-		 * 
-		 * logger.info("XML File Generated: " +
-		 * XmlFileWritter.writeXMLFile(xml));
-		 * 
-		 * } catch (JsonProcessingException e) { // TODO Auto-generated catch
-		 * block e.printStackTrace(); }
-		 */
-
-		/*
-		 * try { xmlMapper.writeValue(new File("/tmp/stuff.xml"), oBankcode); }
-		 * catch (JsonGenerationException e) { // TODO Auto-generated catch
-		 * block e.printStackTrace(); } catch (JsonMappingException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } catch (IOException
-		 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
-		 */
-
-		// or
-		/*
-		 * try { xmlMapper.writeValue(new File("/tmp/stuff.json"), oBankcode); }
-		 * catch (JsonGenerationException e) { // TODO Auto-generated catch
-		 * block e.printStackTrace(); } catch (JsonMappingException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } catch (IOException
-		 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
-		 */
 
 		ModelAndView model = new ModelAndView("home");
 		// model.addObject("bankcode", oBankcode);

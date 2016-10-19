@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 <!-- <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"> -->
-<log4j:configuration debug="true" xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration debug="true"
+	xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-<!-- configuration file taken from http://www.mkyong.com/logging/log4j-xml-example  -->
+	<!-- configuration file taken from http://www.mkyong.com/logging/log4j-xml-example -->
 
 	<!-- Appenders <appender name="console" class="org.apache.log4j.ConsoleAppender"> 
 		<param name="Target" value="System.out" /> <layout class="org.apache.log4j.PatternLayout"> 
@@ -11,16 +12,19 @@
 
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L (%t) [%X]-%m%n" />
 		</layout>
 	</appender>
 
-	<appender name="file" class="org.apache.log4j.RollingFileAppender">
-				
-		<param name="file" value="${catalina.home}/logs/fxclient.log" /> 
+	<!-- <appender name="file" class="org.apache.log4j.RollingFileAppender"> -->
+	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${catalina.home}/logs/fxclient.log" />
+		<param name="DatePattern" value=".yyyy-MM-dd" />
 		<!-- <param name="file" value="/logs/appLog.log" /> -->
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L (%t)-%m%n" />
 		</layout>
 	</appender>
 

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import bb.org.bd.model.exp.Exp_Detail;
 import bb.org.bd.constants.Constants;
 import bb.org.bd.model.exp.EXP_INFO;
-import bb.org.bd.utils.DateFormater;
+import bb.org.bd.utils.DateTimeManager;
 import bb.org.bd.utils.JsonNameManager;
 
 public class ExpXmlGenerator {
@@ -27,7 +27,7 @@ public class ExpXmlGenerator {
 	public boolean generateExpXmlForHolidays() {
 
 		try {
-			String yesterday = DateFormater.getYesterdayDateString();
+			String yesterday = DateTimeManager.getYesterdayDateString();
 			// holiday checking
 
 			HttpHeaders requestHeaders = new HttpHeaders();
@@ -60,7 +60,7 @@ public class ExpXmlGenerator {
 				xml = expPojoToXmlString(oExp_Info);
 				// logger.info("XML File Generated: " +
 				// XmlFileWritter.writeXMLFile(xml));
-				fileName = "EXP_DATA_" + DateFormater.getYesterdayDateString("yyyyMMdd") + "_" + numberOfFile + "_Of_"
+				fileName = "EXP_DATA_" + DateTimeManager.getYesterdayDateString("yyyyMMdd") + "_" + numberOfFile + "_Of_"
 						+ listExp_Info.size();
 				logger.info("XML File Generated: " + XmlFileWritter.writeXMLFile(xml, fileName));
 			}
@@ -80,17 +80,17 @@ public class ExpXmlGenerator {
 
 			String date = "";
 			String timeTo = "";
-			String timeFrom = DateFormater.getCurrentDateTime("HH:mm:ss");
+			String timeFrom = DateTimeManager.getCurrentDateTime("HH:mm:ss");
 			String fileNameStarts = "";
 
 			if (timeFrom.startsWith("00:")) {
 				timeFrom = "16:30:01";
-				timeTo = "24:00:00";
-				date = DateFormater.getYesterdayDateString("yyyy-MM-dd");
-				fileNameStarts = "EXP_DATA_" + DateFormater.getYesterdayDateString("yyyyMMdd") + "_16-30_to_24-00_";
+				timeTo = "23:59:59";
+				date = DateTimeManager.getYesterdayDateString("yyyy-MM-dd");
+				fileNameStarts = "EXP_DATA_" + DateTimeManager.getYesterdayDateString("yyyyMMdd") + "_16-30_to_24-00_";
 			} else {
-				date = DateFormater.getToday("yyyy-MM-dd");
-				fileNameStarts = "EXP_DATA_" + DateFormater.getToday("yyyyMMdd");
+				date = DateTimeManager.getToday("yyyy-MM-dd");
+				fileNameStarts = "EXP_DATA_" + DateTimeManager.getToday("yyyyMMdd");
 
 				if (timeFrom.startsWith("13:")) {
 					timeFrom = "00:00:00";
